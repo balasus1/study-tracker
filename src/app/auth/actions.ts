@@ -79,3 +79,28 @@ export async function signInWithGoogle() {
   })
   if (data?.url) redirect(data.url)
 }
+
+export async function skipLoginAction() {
+  const supabase = await createClient()
+  const email = 'admin@studytracker.local'
+  const password = 'skip-login-secure-password-123'
+  
+  const { error } = await supabase.auth.signInWithPassword({ email, password })
+  
+  if (error) {
+    // If user doesn't exist, sign them up
+    const { error: signUpError } = await supabase.auth.signUp({ 
+      email, 
+      password, 
+      options: { 
+        data: { display_name: 'Admin' } 
+      } 
+    })
+    if (signUpError) {
+      redirect('/login?message=' + encodeURIComponent(signUpError.message))
+    }
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/dashboard')
+}

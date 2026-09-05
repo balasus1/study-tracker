@@ -1,4 +1,4 @@
-import { signup, signInWithGithub, signInWithGoogle } from '@/app/auth/actions'
+import { signup, signInWithGithub, signInWithGoogle, skipLoginAction } from '@/app/auth/actions'
 import Link from 'next/link'
 
 export default async function SignupPage({
@@ -17,6 +17,16 @@ export default async function SignupPage({
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+        {process.env.NEXT_PUBLIC_SKIP_LOGIN === 'true' && (
+          <form action={skipLoginAction} className="mb-6">
+            <button
+              type="submit"
+              className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+            >
+              Skip Login (Dev Mode)
+            </button>
+          </form>
+        )}
         <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" action={signup}>
             <div>
