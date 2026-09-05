@@ -6,6 +6,9 @@ import { Code2 } from 'lucide-react'
 export async function Navbar() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const skipLogin = process.env.NEXT_PUBLIC_SKIP_LOGIN === 'true'
+  
+  const showNav = user || skipLogin
 
   return (
     <nav className="bg-white border-b border-gray-200">
@@ -16,7 +19,7 @@ export async function Navbar() {
               <Code2 className="h-8 w-8 text-indigo-600" />
               <span className="ml-2 text-xl font-bold text-gray-900">Study Tracker</span>
             </div>
-            {user && (
+            {showNav && (
               <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                 <Link href="/dashboard" className="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
                   Dashboard
@@ -37,7 +40,7 @@ export async function Navbar() {
                   Logout
                 </button>
               </form>
-            ) : (
+            ) : !skipLogin ? (
               <div className="flex space-x-4">
                 <Link href="/login" className="text-gray-500 hover:text-gray-700 text-sm font-medium">
                   Login
@@ -46,7 +49,7 @@ export async function Navbar() {
                   Sign up
                 </Link>
               </div>
-            )}
+            ) : null}
           </div>
         </div>
       </div>
