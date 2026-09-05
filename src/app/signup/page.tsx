@@ -1,4 +1,4 @@
-import { signup } from '@/app/auth/actions'
+import { signup, signInWithGithub, signInWithGoogle } from '@/app/auth/actions'
 import Link from 'next/link'
 
 export default async function SignupPage({
@@ -80,6 +80,36 @@ export default async function SignupPage({
               </button>
             </div>
           </form>
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300" />
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="bg-white px-2 text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              <form action={signInWithGoogle}>
+                <button
+                  type="submit"
+                  className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                >
+                  Google
+                </button>
+              </form>
+              <form action={signInWithGithub}>
+                <button
+                  type="submit"
+                  className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-500 shadow-sm hover:bg-gray-50"
+                >
+                  GitHub
+                </button>
+              </form>
+            </div>
+          </div>
+
           <div className="mt-6">
             <div className="relative">
               <div className="relative flex justify-center text-sm">
