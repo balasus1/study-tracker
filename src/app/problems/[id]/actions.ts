@@ -2,8 +2,13 @@
 
 import { createClient } from '@/lib/supabase/server'
 import { generateObject } from 'ai'
-import { openai } from '@ai-sdk/openai'
+import { createOpenAI } from '@ai-sdk/openai'
 import { z } from 'zod'
+
+const openrouter = createOpenAI({
+  baseURL: 'https://openrouter.ai/api/v1',
+  apiKey: process.env.OPENROUTER_API_KEY,
+})
 import { revalidatePath } from 'next/cache'
 
 export async function generateSolutions(problemId: string) {
@@ -16,7 +21,7 @@ export async function generateSolutions(problemId: string) {
 
   try {
     const { object } = await generateObject({
-      model: openai('gpt-4o'), 
+      model: openrouter('openai/gpt-4o-2024-08-06'), 
       schema: z.object({
         python: z.string(),
         python_explanation: z.string(),
